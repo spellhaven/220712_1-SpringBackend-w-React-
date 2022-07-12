@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace = "com.spellhaven.userlist.dao.IDao">
+
+	<select id="userList" resultType = "com.spellhaven.userlist.dto.UserDto">
+		SELECT * FROM react_board ORDER BY id
+	</select>
+	
+	<select id="userById" resultType = "com.spellhaven.userlist.dto.UserDto" parameterType="int"> 
+		SELECT * FROM react_board WHERE id = #{id}
+	</select> <!-- 원래 WHERE id = #{param1}이라고 했었는데, 사실 파라미터의 위치와 순서만 중요할 뿐 {}안의 문구는 크게 상관없다 하셨다. 그래서 이름을 id라 짓고 parameterType를 명시해 줬다. -->
+
+	<insert id="insertUser" parameterType="com.spellhaven.userlist.dto.UserDto"> <!-- 여기선 꼭 parameterType를 명시해야 한다. 평소랑 다르게 DTO를 바로 가져와서 넣으니까. -->
+		INSERT INTO react_board(id, username, phone, nickname, age, membership)
+		VALUES(react_seq.nextval, #{username}, #{phone}, #{nickname}, #{age}, #{membership})
+	</insert>
+	
+	<update id="updateUser" parameterType="com.spellhaven.userlist.dto.UserDto">
+		UPDATE react_board SET phone = #{phone}, nickname = #{nickname}, age = #{age}, membership = #{membership}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM react_board WHERE id = #{id}
+	</delete>
+
+</mapper>
